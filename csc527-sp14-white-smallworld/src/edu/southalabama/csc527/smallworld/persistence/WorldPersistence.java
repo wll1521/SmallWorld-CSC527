@@ -45,7 +45,7 @@ public class WorldPersistence {
 	 * @return a game world.
 	 */
 	public static World loadWorld(String classpathLocation) {
-		URL defaultURL = Object.class.getResource(classpathLocation);
+		URL defaultURL = WorldPersistence.class.getResource(classpathLocation);
 		if (defaultURL == null) {
 			throw new IllegalStateException(
 					"Unable to find world file:  cannot locate \""
