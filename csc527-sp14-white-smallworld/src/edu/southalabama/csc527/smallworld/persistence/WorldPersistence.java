@@ -28,7 +28,7 @@ public class WorldPersistence {
 	/**
 	 * The version of the game as defined by the XML save file format.
 	 */
-	public static final String SAVEFILE_VERSION = "1.0";
+	public static final String SAVEFILE_VERSION = "1.1";
 
 	/**
 	 * The full location, on the Java classpath, of the default world file.
@@ -175,6 +175,11 @@ public class WorldPersistence {
 		Element description = new Element(DESCRIPTION_TAG);
 		placeElement.addContent(description);
 		description.setText(place.getDescription());
+		
+		// added win condition attribute
+		if (place.arrivalWinsGame()) {
+			placeElement.setAttribute(WINS_TAG, "Y");
+		}
 
 		for (Direction possibleDirection : Direction.values()) {
 			if (place.isTravelAllowedToward(possibleDirection)) {
@@ -230,8 +235,18 @@ public class WorldPersistence {
 					.getText();
 			if (name == null || article == null || description == null)
 				throw new IllegalStateException();
-
-			world.createPlace(name, article, description);
+			
+			//attribute tag and boolean condition added
+			String win = placeElement.getAttributeValue(WINS_TAG);
+			boolean arrivalWins = (win != null && win.contains("Y"));
+			
+			// Create new place and winning place if set in xml
+			Place createNewPlace = world.createPlace(name, article, description);
+			if (arrivalWins) {
+				createNewPlace.setArrivalWinsGame(true);
+			}
+			
+			//world.createPlace(name, article, description);
 		}
 		/*
 		 * Second Pass: Next, we need to connect the places into a map as
@@ -245,7 +260,7 @@ public class WorldPersistence {
 								+ placeElement.getAttributeValue(NAME_TAG)
 								+ "\" during the second pass through the file..."
 								+ "did the file change while we were reading it?");
-
+			
 			List<Element> travelList = placeElement.getChildren(TRAVEL_TAG);
 			for (Element t : travelList) {
 				Direction d = Direction.getInstance(t
@@ -314,4 +329,6 @@ public class WorldPersistence {
 	private static final String TRAVEL_TAG = "travel";
 
 	private static final String VERSION_TAG = "version";
+	
+	private static final String WINS_TAG = "arrivalWinsGame"; //added win tag
 }

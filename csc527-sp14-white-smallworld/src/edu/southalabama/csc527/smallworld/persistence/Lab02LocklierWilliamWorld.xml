@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smallworld version="1.0">
-  <place name="Narnia" article="">
+  <place name="Narnia" article="" arrivalWinsGame = "Y">
     <description>Dragons, man-eating goats, horse-people are everywhere. Battling it out for supremecy. Suddenly they all look at you.</description>
     <travel direction="N">Mysterious Room</travel>
   </place>

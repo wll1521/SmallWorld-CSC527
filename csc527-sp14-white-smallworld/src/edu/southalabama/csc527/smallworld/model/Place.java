@@ -39,7 +39,7 @@ public class Place {
 		f_description = description;
 	}
 
-	
+	//New boolean win condition
 	private boolean f_arrivalWinsGame;
 	
 	//Getter
