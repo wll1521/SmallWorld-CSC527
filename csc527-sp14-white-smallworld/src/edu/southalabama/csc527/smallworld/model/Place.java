@@ -39,6 +39,20 @@ public class Place {
 		f_description = description;
 	}
 
+	
+	private boolean f_arrivalWinsGame;
+	
+	//Getter
+	public boolean arrivalWinsGame() {
+		return f_arrivalWinsGame;
+	}
+	
+	//Setter
+	public void setArrivalWinsGame(boolean value) {
+		f_arrivalWinsGame = value;
+	}
+	
+	
 	/**
 	 * The immutable reference to the {@link World} instance this is contained
 	 * within.

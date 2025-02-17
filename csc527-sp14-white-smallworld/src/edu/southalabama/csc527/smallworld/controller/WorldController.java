@@ -127,6 +127,12 @@ public final class WorldController {
 			 * Move the player
 			 */
 			player.setLocation(newPlayerLocation);
+			
+			//Check win trigger
+			if (newPlayerLocation.arrivalWinsGame()) {
+				f_world.addToMessage("Congrats! You win!");
+				f_world.setGameOver();
+			}
 		} else {
 			/*
 			 * Travel is not allowed from the player's location in the specified
