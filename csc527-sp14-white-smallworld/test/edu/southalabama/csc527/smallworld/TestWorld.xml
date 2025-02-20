@@ -19,7 +19,7 @@
 		<travel direction="N">Hall</travel>
 		<travel direction="W">Dining Room</travel>
 	</place>
-	<place name="Dining Room" article="the">
+	<place name="Dining Room" article="the" arrivalWinsGame = "Y">
 		<description>You are in the dining room</description>
 		<travel direction="N">Kitchen</travel>
 		<travel direction="E">Living Room</travel>

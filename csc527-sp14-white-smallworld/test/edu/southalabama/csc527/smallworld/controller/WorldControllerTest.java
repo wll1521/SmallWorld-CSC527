@@ -73,6 +73,51 @@ public class WorldControllerTest extends TestCase {
 		}
 		assertEquals(w.getPlace("Bathroom"), p.getLocation());
 	}
+	
+	/*
+	 * Test method for
+	 * 'edu.southalabama.csc527.smallworld.controller.WorldController.winningCondition'
+	 */
+	public void testWinningConditionExplicit() {
+		World w = f_wc.getWorld();
+		Player p = w.getPlayer();
+		f_observed = false;
+		assertEquals(w.getPlace("Living Room"), p.getLocation());
+		w.getPlace("Bathroom").setArrivalWinsGame(true);
+		f_wc.travel(Direction.NORTH);
+		assertEquals(w.getPlace("Hall"), p.getLocation());
+		assertTrue(f_observed);
+		f_wc.travel(Direction.NORTH);
+		assertEquals(w.getPlace("Bathroom"), p.getLocation());
+		assertTrue(w.isGameOver());
+		f_wc.travel(Direction.NORTH);
+		assertEquals(w.getPlace("Bathroom"), p.getLocation());
+		try {
+			f_wc.travel(null); // should throw AssertionError
+		} catch (AssertionError e) {
+		}
+		assertEquals(w.getPlace("Bathroom"), p.getLocation());
+	}
+	
+	/*
+	 * Test method for
+	 * 'edu.southalabama.csc527.smallworld.controller.WorldController.winningCondition'
+	 */
+	public void testWinningConditionImplicit() {
+		World w = f_wc.getWorld();
+		Player p = w.getPlayer();
+		f_observed = false;
+		assertEquals(w.getPlace("Living Room"), p.getLocation());
+		f_wc.travel(Direction.WEST);
+		assertEquals(w.getPlace("Dining Room"), p.getLocation());
+		assertTrue(f_observed);
+		assertTrue(w.isGameOver());
+		try {
+			f_wc.travel(null); // should throw AssertionError
+		} catch (AssertionError e) {
+		}
+		assertEquals(w.getPlace("Dining Room"), p.getLocation());
+	}
 
 	/*
 	 * Test method for
