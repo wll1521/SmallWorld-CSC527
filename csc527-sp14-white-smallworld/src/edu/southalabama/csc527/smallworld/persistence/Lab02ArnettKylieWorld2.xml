@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="The Krusty Krab" article="" arrivalWinsGame = "Y">
+    <description>You are surrounded by the sweet smell of Krabby Patties, sit down and take a bite.</description>
+    <travel direction="N">Bikini Bottom</travel>
+  </place>
+  <place name="The Chum Bucket" article="a">
+    <description>You are standing infront of Plankton and a horrible smell hits your nose. You probably should turn back.</description>
+    <travel direction="S">Bikini Bottom</travel>
+  </place>
+  <place name="Bikini Bottom" article="a">
+    <description>You are standing in a fork in the road, with a rumbling stomach, choose your fate to find some good grub.</description>
+    <travel direction="N">The Chum Bucket</travel>
+    <travel direction="S">The Krusty Krab</travel>
+  </place>
+  <player location="Bikini Bottom"/>
+</smallworld>
