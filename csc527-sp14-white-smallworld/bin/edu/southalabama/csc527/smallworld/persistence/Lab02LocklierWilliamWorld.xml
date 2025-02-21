@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="Narnia" article="" arrivalWinsGame = "Y">
+    <description>Dragons, man-eating goats, horse-people are everywhere. Battling it out for supremecy. Suddenly they all look at you.</description>
+    <travel direction="N">Mysterious Room</travel>
+  </place>
+  <place name="Hallway" article="a">
+    <description>You are standing in a solid white hallway and can't remember how you've gotten there. There is only one door at the end.</description>
+    <travel direction="S">Mysterious Room</travel>
+  </place>
+  <place name="Mysterious Room" article="a">
+    <description>You go inside to an empty room. With only a bed and a closet. Your traversal options appear limited. Dare you? Or do you go back?</description>
+    <travel direction="N">Hallway</travel>
+    <travel direction="S">Narnia</travel>
+  </place>
+  <player location="Hallway"/>
+</smallworld>

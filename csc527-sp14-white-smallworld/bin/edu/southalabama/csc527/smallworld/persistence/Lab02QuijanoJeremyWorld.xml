@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="Mount Doom" article="" arrivalWinsGame="Y">
+    <description>You approach an ominous volcanic mountain. Smoke and light billowing from its peak. You sense danger all around. This is the destination the voice in your head described.</description>
+    <travel direction="W">Long Road</travel>
+  </place>
+  <place name="Long Road" article="the">
+    <description>You have entered the Long Road. It is a long and winding road that leads to you to Mount Doom. There are valleys and rivers, deserts and forests, and danger along the way. Do you continue or do you return?</description>
+    <travel direction="E">Mount Doom</travel>
+    <travel direction="W">Shire</travel>
+  </place>
+  <place name="Shire" article="the">
+    <description>You are standing in a village with many people and buildings surrounding you. You don't know how you got here. You hear a voice in your head to go to Mount Doom. There is only one way there... The Long Road to the East.</description>
+    <travel direction="E">Long Road</travel>
+  </place>
+  <player location="Shire"/>
+</smallworld>

@@ -1,0 +1,8 @@
+edu.southalabama.csc527.smallworld
+edu.southalabama.csc527.smallworld.controller
+edu.southalabama.csc527.smallworld.model
+edu.southalabama.csc527.smallworld.persistence
+edu.southalabama.csc527.smallworld.textui
+edu.southalabama.csc527.smallworld.textui.console
+edu.southalabama.csc527.smallworld.textui.graphical
+edu.southalabama.csc527.smallworld.textui.parser
