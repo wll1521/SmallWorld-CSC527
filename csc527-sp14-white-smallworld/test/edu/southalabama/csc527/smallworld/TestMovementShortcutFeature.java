@@ -12,12 +12,52 @@ public class TestMovementShortcutFeature extends TestCase implements
 		IParserObserver {
 
 	public void testDirection() {
-		// TODO: add tests here for full direction names, e.g., "north" or
+		// DONE: add tests here for full direction names, e.g., "north" or
 		// "NORTH" or "NoRtH", etc.
+		
+		// Set player location
+		f_w.getPlayer().setLocation(f_w.getPlace("C"));
+		
+		// Feed parser command
+		f_parser.parse("north");
+		
+		// Verifies command worked
+		assertEquals("N", f_w.getPlayer().getLocation().getName());
+		
+		//reset player location
+		f_w.getPlayer().setLocation(f_w.getPlace("C"));
+		
+		// Feed parser command
+		f_parser.parse("NORTH");
+		
+		// Verifies command worked
+		assertEquals("N", f_w.getPlayer().getLocation().getName());
+		
+		// Repeat
+		f_w.getPlayer().setLocation(f_w.getPlace("C"));
+		
+		f_parser.parse("NoRtH");
+		
+		assertEquals("N", f_w.getPlayer().getLocation().getName());
 	}
 
 	public void testAbbreviation() {
-		// TODO: add tests here for full abbreviation names, e.g., "n" or "N".
+		// DONE: add tests here for full abbreviation names, e.g., "n" or "N".
+		// Set player location
+		f_w.getPlayer().setLocation(f_w.getPlace("C"));
+		
+		// Feed parser abbreviated command
+		f_parser.parse("n");
+		
+		// Verify command worked
+		assertEquals("N", f_w.getPlayer().getLocation().getName());
+		
+		// Repeat
+		f_w.getPlayer().setLocation(f_w.getPlace("C"));
+		
+		f_parser.parse("N");
+		
+		assertEquals("N", f_w.getPlayer().getLocation().getName());
 	}
 
 	World f_w;

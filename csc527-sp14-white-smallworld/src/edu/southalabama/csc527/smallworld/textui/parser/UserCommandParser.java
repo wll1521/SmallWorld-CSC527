@@ -60,6 +60,13 @@ public final class UserCommandParser {
          * in the game.
          */
         boolean commandExecuted = false;
+        
+        
+        // If command is a single word and valid direction treat as movement command
+        if (words.length == 1 && Direction.getInstance(words[0]) != null) {
+        	f_wc.travel(Direction.getInstance(words[0]));
+        	commandExecuted = true;
+        }
 
         if (words[0].equals("GO") || words[0].equals("MOVE")) {
             /*
