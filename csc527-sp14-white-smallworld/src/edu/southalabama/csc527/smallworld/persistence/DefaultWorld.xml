@@ -63,5 +63,26 @@
     <travel direction="N">Shimmering Room</travel>
     <travel direction="E">Bird Chamber</travel>
   </place>
+  <item name="Pot of Gold" article="a" location="Hall of Mists" takePoints="500" dropPoints="0" />
+  <item name="Green Mushroom" article="a" location="Hill" takePoints="-1000" dropPoints="0" />
+  <item name="Shimmering Idol" article="a" location="Debris Room" takePoints="10" dropPoints="0">
+  	<location neededToEnter="Y" blockedMsg="A shimmering field blocks your way.">Shimmering Room</location>
+  </item>
+  <item name="Rusty Key" article="the" location="Building" takePoints="50" dropPoints="0">
+  	<location neededToEnter="Y" blockedMsg="A locked rusty gate blocks your way.">Hall of Mists</location>
+  </item>
+  <item name="Grate Key" article="the" location="Hill" takePoints="10" dropPoints="0">
+  	<location neededToEnter="Y" blockedMsg="The grate is locked.">Inside Grate</location>
+  </item>
+  <item name="Bird" article="a" location="Bird Chamber" takePoints="50" dropPoints="0">
+  	<location takePoints="15" dropPoints="1000">Hill</location>
+  </item>
+  <item name="Gold Coin" article="a" location="Slit in the Stream" takePoints="200" dropPoints="0" />
+  <item name="Skunk Carcass" article="a" location="Canyon" takePoints="-10" dropPoints="10" />
+  <item name="Lamp" article="the" location="Road" takePoints="10" dropPoints="0">
+  	<location neededToEnter="Y" blockedMsg="It is too dark inside the grate.">Inside Grate</location>
+  	<location neededToEnter="Y" blockedMsg="It is too dark inside the building.">Building</location>
+  </item>
+  <item name="Silver Coin" article="a" location="Canyon" takePoints="100" dropPoints="0" />
   <player location="Road"/>
 </smallworld>

@@ -179,4 +179,32 @@ public final class WorldController {
 	 * be changed via the {@link #setWorld(World)} method.
 	 */
 	private World f_world;
+	
+	/**
+	* Removes the specified item from the player's location and places
+	* it in the player's inventory.
+	*
+	* @param item
+	* the item to take.
+	*/
+	public void take(Item item) { YOUR CODE HERE }
+	
+	/**
+	* Removes all items from the player's location and places them in the
+	* player's inventory.
+	*/
+	public void takeAll() { YOUR CODE HERE }
+	
+	/**
+	* Drops the specified item from the player's inventory.
+	*
+	* @param item
+	* the item to drop.
+	*/
+	public void drop(Item item) { YOUR CODE HERE }
+	
+	/**
+	* Examines the items in the player's inventory.
+	*/
+	public void inventory() { YOUR CODE HERE }
 }
