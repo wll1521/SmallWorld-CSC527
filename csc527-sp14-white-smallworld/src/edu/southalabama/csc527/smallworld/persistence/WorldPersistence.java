@@ -97,6 +97,9 @@ public class WorldPersistence {
 			loadPlaceXML(root, world);
 
 			loadPlayerXML(root, world);
+			
+			loadItemXML(root, world);
+
 
 		} catch (IOException e) {
 			throw new IllegalStateException(
@@ -138,6 +141,14 @@ public class WorldPersistence {
 				worldElement.addContent(createPlaceXML(l));
 			}
 		}
+		
+		// Save items for each place
+		for (Place place : world.getPlaces()) {
+		    for (Item item : place.getItems()) {
+		        worldElement.addContent(createItemXML(item, place));
+		    }
+		}
+
 
 		/*
 		 * Create XML for the Player
@@ -309,6 +320,74 @@ public class WorldPersistence {
 			}
 		}
 	}
+	
+	//Items additions aside from load and save changes: creates item instance from xml
+	private static void loadItemXML(Element root, World world) {
+	    List<Element> itemList = root.getChildren("item");
+	    for (Element itemElement : itemList) {
+	        String name = itemElement.getAttributeValue("name");
+	        String article = itemElement.getAttributeValue("article");
+	        String locationName = itemElement.getAttributeValue("location");
+	        String takePointsStr = itemElement.getAttributeValue("takePoints");
+	        String dropPointsStr = itemElement.getAttributeValue("dropPoints");
+	        int takePoints = 0;
+	        int dropPoints = 0;
+	        try {
+	            takePoints = Integer.parseInt(takePointsStr);
+	        } catch (NumberFormatException e) { }
+	        try {
+	            dropPoints = Integer.parseInt(dropPointsStr);
+	        } catch (NumberFormatException e) { }
+	        Item newItem = new Item(name, article, takePoints, dropPoints);
+	        
+	        // Check for nested <location> elements for location-specific rules.
+	        List<Element> ruleElements = itemElement.getChildren("location");
+	        for (Element ruleEl : ruleElements) {
+	            String ruleLocation = ruleEl.getText().trim();
+	            boolean neededToEnter = "Y".equalsIgnoreCase(ruleEl.getAttributeValue("neededToEnter"));
+	            String blockedMsg = ruleEl.getAttributeValue("blockedMsg");
+	            String ruleTakePointsStr = ruleEl.getAttributeValue("takePoints");
+	            String ruleDropPointsStr = ruleEl.getAttributeValue("dropPoints");
+	            int ruleTakePoints = 0;
+	            int ruleDropPoints = 0;
+	            try {
+	                ruleTakePoints = Integer.parseInt(ruleTakePointsStr);
+	            } catch (NumberFormatException e) { }
+	            try {
+	                ruleDropPoints = Integer.parseInt(ruleDropPointsStr);
+	            } catch (NumberFormatException e) { }
+	            // Create rule and add to item
+	            ItemLocationRule rule = new ItemLocationRule(neededToEnter, blockedMsg, ruleTakePoints, ruleDropPoints);
+	            newItem.addLocationRule(ruleLocation, rule);
+	            // If this rule indicates the item is required to enter the location,
+	            // add it to the world's required items mapping
+	            if (neededToEnter) {
+	                world.addRequiredItem(ruleLocation, newItem);
+	            }
+	        }
+	        
+	        // Get the location from the world using the provided location name.
+	        Place location = world.getPlace(locationName);
+	        if (location != null) {
+	            location.addItem(newItem);
+	        } else {
+	            world.addToMessage("Warning: Place \"" + locationName + "\" not found for item " + newItem.getShortDescription());
+	        }
+	    }
+	}
+
+	// create an <item> element with its associated attributes
+	private static Element createItemXML(Item item, Place location) {
+	    Element itemElement = new Element("item");
+	    itemElement.setAttribute("name", item.getName());
+	    itemElement.setAttribute("article", item.getArticle());
+	    itemElement.setAttribute("location", location.getName());
+	    itemElement.setAttribute("takePoints", Integer.toString(item.getTakePoints()));
+	    itemElement.setAttribute("dropPoints", Integer.toString(item.getDropPoints()));
+	    return itemElement;
+	}
+
+
 
 	private static final String ARTICLE_TAG = "article";
 

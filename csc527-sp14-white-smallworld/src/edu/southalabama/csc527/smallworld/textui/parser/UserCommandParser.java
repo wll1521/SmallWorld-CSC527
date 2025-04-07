@@ -3,6 +3,7 @@ package edu.southalabama.csc527.smallworld.textui.parser;
 import edu.southalabama.csc527.smallworld.controller.WorldController;
 import edu.southalabama.csc527.smallworld.model.Direction;
 import static edu.southalabama.csc527.smallworld.textui.TextUtilities.*;
+import edu.southalabama.csc527.smallworld.model.Item;
 
 /**
  * Parses user commands and informs a specified {@link WorldController} instance
@@ -140,6 +141,48 @@ public final class UserCommandParser {
             }
             commandExecuted = true;
         }
+        
+     // New Item related commands (help also added):  
+     // New command: TAKE (either a specific item or "take all")
+        if (words[0].equals("TAKE")) {
+            if (words.length == 1 || command.trim().equalsIgnoreCase("TAKE ALL")) {
+                f_wc.takeAll();
+            } else {
+                // Extract the item name from the command. Item is everything after "TAKE "
+                String itemName = command.substring(4).trim();
+                // Helper function in World to find an item in the current location by name
+                Item item = f_wc.getWorld().findItemInCurrentLocation(itemName);
+                if (item != null) {
+                    f_wc.take(item);
+                } else {
+                    f_pwo.display("Item \"" + itemName + "\" not found at your current location.");
+                }
+            }
+            commandExecuted = true;
+        }
+        
+        // New command: DROP
+        else if (words[0].equals("DROP")) {
+            if (words.length == 1) {
+                f_pwo.display("Please specify which item to drop.");
+            } else {
+                String itemName = command.substring(5).trim(); // remove "DROP " from command
+                // Helper function in World to search for an item in the player's inventory by name
+                Item item = f_wc.getWorld().findItemInInventory(itemName);
+                if (item != null) {
+                    f_wc.drop(item);
+                } else {
+                    f_pwo.display("You are not carrying \"" + itemName + "\".");
+                }
+            }
+            commandExecuted = true;
+        }
+        
+        // New command: INVENTORY ("INV" or "I")
+        else if (words[0].equals("INVENTORY") || words[0].equals("INV") || words[0].equals("I")) {
+            f_wc.inventory();
+            commandExecuted = true;
+        }
 
         if (!commandExecuted) {
             /*
@@ -185,6 +228,12 @@ public final class UserCommandParser {
         helpMessage.append(LINESEP2);
         helpMessage.append("\"save <filename>\" saves the current game state "
                 + "to the specified filename. Example \"save C:\\save1.xml\"");
+        helpMessage.append(LINESEP2);
+        helpMessage.append("\"take <item name>\" to pick up an item at your current location. Use \"take all\" to pick up everything.");
+        helpMessage.append(LINESEP2);
+        helpMessage.append("\"drop <item name>\" to drop an item from your inventory.");
+        helpMessage.append(LINESEP2);
+        helpMessage.append("\"inventory\" (or \"inv\" or \"I\") to list the items you are carrying.");
         return helpMessage.toString();
     }
 }

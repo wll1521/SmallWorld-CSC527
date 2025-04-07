@@ -305,4 +305,53 @@ public final class World {
 	public void setGameOver() {
 		f_gameOver = true;
 	}
+	
+	// Items additions
+	// Helper function for parser
+	public Item findItemInCurrentLocation(String itemName) {
+	    for (Item item : getPlayer().getLocation().getItems()) {
+	        if (item.getName().equalsIgnoreCase(itemName)) {
+	            return item;
+	        }
+	    }
+	    return null;
+	}
+
+	// Helper function for parser
+	public Item findItemInInventory(String itemName) {
+	    for (Item item : getPlayer().getInventory()) {
+	        if (item.getName().equalsIgnoreCase(itemName)) {
+	            return item;
+	        }
+	    }
+	    return null;
+	}
+	
+	// Required items map
+	private Map<String, List<Item>> f_requiredItemsForLocation = new HashMap<>();
+
+	// Setter: Registers item as required to enter a place
+	public void addRequiredItem(String locationName, Item item) {
+	    String key = locationName.toUpperCase();
+	    List<Item> list = f_requiredItemsForLocation.get(key);
+	    if (list == null) {
+	         list = new ArrayList<>();
+	         f_requiredItemsForLocation.put(key, list);
+	    }
+	    if (!list.contains(item)) {
+	         list.add(item);
+	    }
+	}
+
+	// Getter: returns list
+	public List<Item> getRequiredItems(String locationName) {
+	    String key = locationName.toUpperCase();
+	    List<Item> list = f_requiredItemsForLocation.get(key);
+	    if (list == null) {
+	         return new ArrayList<>();
+	    }
+	    return list;
+	}
+
+
 }

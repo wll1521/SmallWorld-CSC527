@@ -2,6 +2,8 @@ package edu.southalabama.csc527.smallworld.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a place, such as a room or corridor, that a character in the game
@@ -173,4 +175,24 @@ public class Place {
 		assert (l != null);
 		f_directionOfTravelToPlace.put(d, l);
 	}
+	
+	// Items additions
+	// Items list:
+	private final List<Item> f_items = new ArrayList<>();
+
+	// Items getter
+	public List<Item> getItems() {
+	    return f_items;
+	}
+
+	// Add item
+	public void addItem(Item item) {
+	    f_items.add(item);
+	}
+
+	// Remove item
+	public boolean removeItem(Item item) {
+	    return f_items.remove(item);
+	}
+
 }

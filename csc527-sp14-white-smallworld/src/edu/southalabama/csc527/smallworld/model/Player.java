@@ -1,5 +1,8 @@
 package edu.southalabama.csc527.smallworld.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An avatar that is controlled by, and represents, the user of the game. At
  * present there is one {@link Player} roaming around per {@link World}
@@ -100,4 +103,24 @@ public final class Player {
 		assert (location != null);
 		f_location = location;
 	}
+	
+	// Items addition
+	// At the class level
+	private final List<Item> f_inventory = new ArrayList<>();
+	private int f_points = 0; // player's score
+
+	// Add a getter for inventory
+	public List<Item> getInventory() {
+	    return f_inventory;
+	}
+
+	// Method to award points
+	public void addPoints(int points) {
+	    f_points += points;
+	}
+
+	public int getPoints() {
+	    return f_points;
+	}
+
 }
