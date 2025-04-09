@@ -2,6 +2,7 @@ package edu.southalabama.csc527.smallworld.textui;
 
 import edu.southalabama.csc527.smallworld.model.Direction;
 import edu.southalabama.csc527.smallworld.model.Place;
+import edu.southalabama.csc527.smallworld.model.Item;
 
 /**
  * A convenience class of handy constants and methods for working with text.
@@ -53,7 +54,7 @@ public class TextUtilities {
 	 * 
 	 * @param place
 	 *            the place to describe
-	 */
+	 *
 	public static String getFullLocationDescription(Place place) {
 		StringBuilder msg = new StringBuilder(place.getShortDescription());
 		// Capitalize the first letter
@@ -64,4 +65,30 @@ public class TextUtilities {
 		msg.append(TextUtilities.getDirectionsFrom(place));
 		return msg.toString();
 	}
+	*/
+	public static String getFullLocationDescription(Place place) {
+	    StringBuilder msg = new StringBuilder(place.getShortDescription());
+	    // Capitalize the first letter
+	    msg.replace(0, 1, msg.substring(0, 1).toUpperCase());
+	    msg.append(". ");
+	    msg.append(place.getDescription());
+	    
+	    // Append the list of items in place
+	    if (!place.getItems().isEmpty()) {
+	        msg.append(LINESEP2);
+	        msg.append("You see: ");
+	        for (Item item : place.getItems()) {
+	            msg.append(item.getShortDescription()).append(", ");
+	        }
+	        // Remove the trailing comma and space, then add a period
+	        msg.setLength(msg.length() - 2);
+	        msg.append(".");
+	    }
+	    
+	    // Append directions
+	    msg.append(LINESEP2);
+	    msg.append(getDirectionsFrom(place));
+	    return msg.toString();
+	}
+
 }

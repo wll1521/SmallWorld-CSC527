@@ -64,15 +64,25 @@ public class ItemManager {
             player.getWorld().addToMessage("You are not carrying " + item.getShortDescription() + ".");
             return false;
         }
+        
+        // Check if the item is required in the current location 
+        // Fix for stuck player
+        ItemLocationRule rule = item.getLocationRule(currentPlace.getName());
+        if (rule != null && rule.isNeededToEnter()) {
+            player.getWorld().addToMessage("You cannot drop " + item.getShortDescription() + " because it is required to enter this location.");
+            return false;
+        }
+        
         // Remove the item from inventory and add it to the current place
         player.getInventory().remove(item);
         currentPlace.getItems().add(item);
+        
         // Award the base drop points and zero them
         int points = item.getDropPoints();
         player.addPoints(points);
         item.zeroDropPoints();
+        
         // Check for a location-specific drop bonus
-        ItemLocationRule rule = item.getLocationRule(currentPlace.getName());
         if (rule != null) {
             int bonus = rule.getDropPoints();
             if (bonus != 0) {
