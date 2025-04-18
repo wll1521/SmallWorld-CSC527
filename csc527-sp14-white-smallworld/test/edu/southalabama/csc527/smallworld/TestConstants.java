@@ -43,4 +43,8 @@ public final class TestConstants {
 	 * classpath.
 	 */
 	public static final String TESTFILEWITHERRORS = "/edu/southalabama/csc527/smallworld/TestWorldError.xml";
+	
+	// added riddle world
+	public static final String TEST_RIDDLE_FILE = "/edu/southalabama/csc527/smallworld/TestRiddleWorld.xml";
+
 }

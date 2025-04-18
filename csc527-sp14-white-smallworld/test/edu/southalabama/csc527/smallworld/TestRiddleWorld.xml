@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="Start" article="a">
+    <description>Starting area.</description>
+    <travel direction="E">PuzzleRoom</travel>
+  </place>
+  <place name="PuzzleRoom" article="the">
+    <description>You are in the puzzle room.</description>
+    <travel direction="W">Start</travel>
+    <riddle answer="key" failMsg="Wrong!" successMsg="Right!">
+      What opens locks?
+    </riddle>
+  </place>
+  <player location="Start"/>
+</smallworld>
