@@ -352,6 +352,13 @@ public final class World {
 	    }
 	    return list;
 	}
+	
+	// Riddle Additions
+	private final RiddleManager riddleManager = new RiddleManager();
+
+    public RiddleManager getRiddleManager() {
+        return riddleManager;
+    }
 
 
 }

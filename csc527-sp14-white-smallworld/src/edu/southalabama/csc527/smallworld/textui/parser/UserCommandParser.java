@@ -62,6 +62,13 @@ public final class UserCommandParser {
          */
         boolean commandExecuted = false;
         
+        // riddle first check
+        // if we’re in the middle of a riddle, treat the entire line as the guess
+        // rather than an action command. Otherwise go through normal parsing
+        if (f_wc.hasPendingRiddle()) {
+            f_wc.attemptRiddle(command);
+            return;
+        }
         
         // If command is a single word and valid direction treat as movement command
         if (words.length == 1 && Direction.getInstance(words[0]) != null) {

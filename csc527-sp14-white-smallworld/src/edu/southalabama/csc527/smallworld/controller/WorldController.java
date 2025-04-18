@@ -156,6 +156,7 @@ public final class WorldController {
 	        return;
 	    }
 	    Place newPlayerLocation = playerLocation.getTravelDestinationToward(direction);
+        
 	    
 	    // Check if the destination requires certain items
 	    List<Item> requiredItems = f_world.getRequiredItems(newPlayerLocation.getName());
@@ -170,6 +171,18 @@ public final class WorldController {
 	            }
 	        }
 	    }
+	    
+	    // Riddle check (blocking unsolved riddles)
+        Riddle r = f_world.getRiddleManager().getRiddleFor(newPlayerLocation.getName());
+        if (r != null && !r.isSolved()) {
+            // stash riddle plus where the user tried to go
+            pendingRiddle = r;
+            pendingTarget  = newPlayerLocation;
+            f_world.addToMessage(r.getPrompt());
+            f_world.turnOver();
+            return;
+        }
+	    
 	    
 	    // Move the player.
 	    player.setLocation(newPlayerLocation);
@@ -242,5 +255,37 @@ public final class WorldController {
 	    getWorld().addToMessage(inventoryList);
 	    getWorld().turnOver();
 	}
+	
+	// Riddles Implementation aside from travel function
+	private Riddle pendingRiddle = null;
+    private Place  pendingTarget  = null;
+	
+	// True if the next user input should be treated as a riddle guess
+    public boolean hasPendingRiddle() {
+        return pendingRiddle != null;
+    }
+
+    // Called when the user types anything while a riddle is pending
+    public void attemptRiddle(String guess) {
+        if (pendingRiddle == null) return;
+
+        if (pendingRiddle.attempt(guess)) {
+            f_world.addToMessage(pendingRiddle.getSuccessMsg()); // correct
+            // now move the player
+            f_world.getPlayer().setLocation(pendingTarget);
+            if (pendingTarget.arrivalWinsGame()) {
+                f_world.addToMessage("Congrats! You win!");
+                f_world.setGameOver();
+            }
+            // clear pending
+            pendingRiddle = null;
+            pendingTarget  = null;
+        } else {
+            f_world.addToMessage(pendingRiddle.getFailMsg()); // wrong
+            // leave pendingRiddle non-null so user can try again
+        }
+        f_world.turnOver();
+    }
+	
 
 }

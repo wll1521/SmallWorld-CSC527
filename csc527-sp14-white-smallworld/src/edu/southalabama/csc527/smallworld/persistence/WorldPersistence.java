@@ -257,6 +257,17 @@ public class WorldPersistence {
 				createNewPlace.setArrivalWinsGame(true);
 			}
 			
+			// gets xml riddle tag element attributes
+			Element rEl = placeElement.getChild("riddle");
+			if (rEl != null) {
+			    String prompt     = rEl.getTextTrim();
+			    String answer     = rEl.getAttributeValue("answer");
+			    String failMsg    = rEl.getAttributeValue("failMsg");
+			    String successMsg = rEl.getAttributeValue("successMsg");
+			    Riddle riddle     = new Riddle(prompt, answer, failMsg, successMsg); // creates riddle object
+			    world.getRiddleManager().addRiddle(name, riddle);	// register for worldcontroller / parser
+			}
+			
 			//world.createPlace(name, article, description);
 		}
 		/*
@@ -386,6 +397,7 @@ public class WorldPersistence {
 	    itemElement.setAttribute("dropPoints", Integer.toString(item.getDropPoints()));
 	    return itemElement;
 	}
+	
 
 
 

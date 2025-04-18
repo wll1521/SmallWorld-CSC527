@@ -43,6 +43,13 @@
     <description>You are in a debris room filled with stuff washed in from the surface. A low wide passage with cobbles becomes plugged with mud and debris here, but an awkward canyon leads upward and west.  A note on the wall says "Magic word XYZZY".</description>
     <travel direction="E">Cobble Crawl</travel>
     <travel direction="W">Canyon</travel>
+    
+    <riddle
+    answer="XYZZY"
+    failMsg="Nothing happens."
+    successMsg="A hollow voice says 'Plugh' and the path opens.">
+    What is the magic word?
+    </riddle>
   </place>
   <place name="Shimmering Room" article="the" arrivalWinsGame="Y">
     <description>You are in a room of shimmering bright white.</description>
