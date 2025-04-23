@@ -53,7 +53,7 @@ public final class UserCommandParser {
      * @param command the users's command to the game.
      */
     public void parse(String command) {
-        String[] words = command.trim().toUpperCase().split("\\s+");
+    	String[] words = command.trim().toUpperCase().split("\\s+");
 
         /*
          * The below flag is used to indicate if we were able to understand the
@@ -66,6 +66,30 @@ public final class UserCommandParser {
         // if we’re in the middle of a riddle, treat the entire line as the guess
         // rather than an action command. Otherwise go through normal parsing
         if (f_wc.hasPendingRiddle()) {
+            String up = command.trim().toUpperCase();
+
+            // Allow look command
+            if (words[0].equals("LOOK")) {
+                f_pwo.look(f_wc.getWorld());
+                return;
+            }
+
+            // Now compute travel logic otherwise, solve riddle
+            Direction dir = null;
+            if (words.length == 1) {
+                dir = Direction.getInstance(words[0]);
+            } else if (words[0].equals("GO") && words.length > 1) {
+                dir = Direction.getInstance(words[1]);
+            }
+
+            if (dir != null) {
+                // For moving away
+                f_wc.clearPendingRiddle();
+                f_wc.travel(dir);
+                return;
+            } 
+            
+            // If it's not a move or look command then it is a guess
             f_wc.attemptRiddle(command);
             return;
         }

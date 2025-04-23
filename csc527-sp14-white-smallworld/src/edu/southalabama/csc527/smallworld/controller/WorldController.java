@@ -264,6 +264,11 @@ public final class WorldController {
     public boolean hasPendingRiddle() {
         return pendingRiddle != null;
     }
+    
+    public void clearPendingRiddle() {
+    	pendingRiddle = null;
+    	pendingTarget = null;
+    }
 
     // Called when the user types anything while a riddle is pending
     public void attemptRiddle(String guess) {
@@ -286,6 +291,5 @@ public final class WorldController {
         }
         f_world.turnOver();
     }
-	
 
 }
