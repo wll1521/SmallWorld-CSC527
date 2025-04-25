@@ -161,7 +161,7 @@ public final class SmallWorld extends JFrame {
 		f_serverResponsesTextArea.setFont(fixed);
 		f_scroll = new JScrollPane(f_serverResponsesTextArea);
 		p2.add(f_scroll, c);
-		//getContentPane().add(p2, BorderLayout.CENTER);
+		getContentPane().add(p2, BorderLayout.CENTER);
 		
 		// add images to UI
 //		ImageIcon icon = new ImageIcon(getClass().getResource("/RoomImages/SolarPath.png"));
