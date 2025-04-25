@@ -2,8 +2,10 @@ package edu.southalabama.csc527.smallworld.textui.graphical;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,10 +23,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.JTextComponent;
+import javax.swing.JToolBar;
+import javax.swing.JList;
+import javax.swing.DefaultListModel;
 
 import edu.southalabama.csc527.smallworld.controller.WorldController;
 import edu.southalabama.csc527.smallworld.textui.ParserWorldObserver;
 import edu.southalabama.csc527.smallworld.textui.parser.UserCommandParser;
+import edu.southalabama.csc527.smallworld.model.Direction;
+import edu.southalabama.csc527.smallworld.model.Item;
+import edu.southalabama.csc527.smallworld.model.World;
 
 /**
  * The main program for SmallWorld with a simple graphical user interface. It
@@ -71,6 +79,10 @@ public final class SmallWorld extends JFrame {
 		/*
 		 * SWING (user interface) variables
 		 */
+		final JLabel statusBar = new JLabel();
+        statusBar.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        getContentPane().add(statusBar, BorderLayout.SOUTH);
+        
 		final JLabel f_messageLabel = new JLabel(
 				"Enter message or type 'help':");
 		final JTextField f_messageField = new JTextField();
@@ -91,7 +103,7 @@ public final class SmallWorld extends JFrame {
 		 * The listener that receives commands and messages from the parser
 		 */
 		final GraphicalParserWorldObserver pwo = new GraphicalParserWorldObserver(
-				f_serverResponsesTextArea);
+				f_serverResponsesTextArea, statusBar);
 		f_wc.getWorld().addObserver(pwo);
 		
 		/**
@@ -163,10 +175,21 @@ public final class SmallWorld extends JFrame {
 
 	private class GraphicalParserWorldObserver extends ParserWorldObserver {
 		final JTextArea f_textArea;
+		final JLabel statusBar;
 
-		GraphicalParserWorldObserver(JTextArea area) {
+		GraphicalParserWorldObserver(JTextArea area, JLabel statusBar) {
 			f_textArea = area;
+			this.statusBar = statusBar;
 		}
+		
+		@Override
+	    public void update(World world) {
+	        super.update(world);  // shows anything pending
+	        // update
+	        String loc = world.getPlayer().getLocation().getShortDescription();
+	        int score = world.getPlayer().getPoints();
+	        statusBar.setText("Location: " + loc + "    Score: " + score);
+	    }
 
 		@Override
 		public void gameOver() {
