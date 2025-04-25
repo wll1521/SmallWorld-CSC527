@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="Lunar Ridge" article="a">
+    <description>You’ve ascended a rocky lunar ridge under the eternal night of space. A gnarled alien tree crests the top, home to a vacant alien nest. In the distance, a domed outpost gleams faintly.</description>
+    <travel direction="E">Solar Path</travel>
+  </place>
+  <place name="Meteor Ravine" article="the">
+    <description>You drift through a narrow meteor-scarred ravine, sloping awkwardly from east to west.</description>
+    <travel direction="E">Debris Chamber</travel>
+    <travel direction="W">Avian Hatchery</travel>
+  </place>
+  <place name="Crack in the Ice Flow" article="the">
+    <description>At your boots, all the meltwater from a glacier funnels into a narrow slit in the ice. Southward, the flow bed is nothing but cracked ice.</description>
+    <travel direction="N">Crystal Valley</travel>
+    <travel direction="S">Grate Lock</travel>
+  </place>
+  <place name="Solar Path" article="a">
+    <description>You are at the edge of a solar trail leading to a small terraforming station. Around you, frozen flora push through alien soil. A stream of vapor leaks from the facility.</description>
+    <travel direction="S">Crystal Valley</travel>
+    <travel direction="E">Terraform Station</travel>
+    <travel direction="W">Lunar Ridge</travel>
+  </place>
+  <place name="Avian Hatchery" article="the">
+    <description>This hatchery chamber is vast, its walls coated in luminous orange crystals. Faint trails lead east and west through the alien chamber.</description>
+    <travel direction="E">Meteor Ravine</travel>
+    <travel direction="W">Mist Hall</travel>
+  </place>
+  <place name="Grate Lock" article="the">
+    <description>You hover above a recessed airlock built into the rocky moon surface. Embedded into the floor is a sealed grate, reinforced with titanium. A dry channel flows inward.</description>
+    <travel direction="N">Crack in the Ice Flow</travel>
+    <travel direction="S">Inner Hatch</travel>
+  </place>
+  <place name="Inner Hatch" article="the">
+    <description>You’re inside a compact chamber beneath the lunar surface. A reinforced grate above lets in dim light. A narrow passage leads westward through the rocks.</description>
+    <travel direction="N">Grate Lock</travel>
+    <travel direction="W">Cobbled Tunnel</travel>
+  </place>
+  <place name="Terraform Station" article="the">
+    <description>You are inside a climate-regulated terraforming station built around a natural spring.</description>
+    <travel direction="W">Solar Path</travel>
+  </place>
+  <place name="Debris Chamber" article="the">
+    <description>You float into a cluttered room filled with remnants swept in from above. The passage east is clogged with alien sediment, but the west leads upward through a jagged ravine. A glowing console displays "Magic word: XYZZY."</description>
+    <travel direction="E">Cobbled Tunnel</travel>
+    <travel direction="W">Meteor Ravine</travel>
+    <riddle answer="XYZZY" failMsg="Nothing happens." successMsg="A synthesized voice echoes 'Plugh' and a portal opens.">
+      What is the access code?
+    </riddle>
+  </place>
+  <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
+    <description>You are in a blindingly radiant room, the walls pulsating with star-energy.</description>
+    <travel direction="S">Mist Hall</travel>
+  </place>
+  <place name="Cobbled Tunnel" article="the">
+    <description>You crawl over metallic cobbles in a low-ceilinged maintenance conduit. A faint light beckons from the east.</description>
+    <travel direction="E">Inner Hatch</travel>
+    <travel direction="W">Debris Chamber</travel>
+  </place>
+  <place name="Crystal Valley" article="a">
+    <description>You drift through a crystalline valley, an icy stream shimmering as it flows through jagged terrain.</description>
+    <travel direction="N">Solar Path</travel>
+    <travel direction="S">Crack in the Ice Flow</travel>
+  </place>
+  <place name="Mist Hall" article="the">
+    <description>You hover at one end of a cavernous hall stretching west, filled with sentient mist that dances in slow spirals.</description>
+    <travel direction="N">Celestial Vault</travel>
+    <travel direction="E">Avian Hatchery</travel>
+  </place>
+
+  <item name="Quantum Core" article="a" location="Mist Hall" takePoints="500" dropPoints="0" />
+  <item name="Alien Fungus" article="a" location="Lunar Ridge" takePoints="-1000" dropPoints="0" />
+  <item name="Idol of Light" article="a" location="Debris Chamber" takePoints="10" dropPoints="0">
+    <location neededToEnter="Y" blockedMsg="A quantum shield prevents your entry.">Celestial Vault</location>
+  </item>
+  <item name="Rusted Passkey" article="the" location="Terraform Station" takePoints="50" dropPoints="0">
+    <location neededToEnter="Y" blockedMsg="A corroded airlock seals the chamber.">Mist Hall</location>
+  </item>
+  <item name="Grate Decoder" article="the" location="Lunar Ridge" takePoints="10" dropPoints="0">
+    <location neededToEnter="Y" blockedMsg="The grate won't open without a decoder.">Inner Hatch</location>
+  </item>
+  <item name="Space Falcon" article="a" location="Avian Hatchery" takePoints="50" dropPoints="0">
+    <location takePoints="15" dropPoints="1000">Lunar Ridge</location>
+  </item>
+  <item name="Star Coin" article="a" location="Crack in the Ice Flow" takePoints="200" dropPoints="0" />
+  <item name="Alien Husk" article="a" location="Meteor Ravine" takePoints="-10" dropPoints="10" />
+  <item name="Plasma Lamp" article="the" location="Solar Path" takePoints="10" dropPoints="0">
+    <location neededToEnter="Y" blockedMsg="It's too dark in the hatch without illumination.">Inner Hatch</location>
+    <location neededToEnter="Y" blockedMsg="The station's systems are offline without light.">Terraform Station</location>
+  </item>
+  <item name="Lunar Coin" article="a" location="Meteor Ravine" takePoints="100" dropPoints="0" />
+
+  <player location="Solar Path"/>
+</smallworld>

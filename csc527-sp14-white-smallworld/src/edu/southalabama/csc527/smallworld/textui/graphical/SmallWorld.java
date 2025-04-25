@@ -1,11 +1,15 @@
 package edu.southalabama.csc527.smallworld.textui.graphical;
 
+import java.io.File;
+import java.net.URL;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +30,14 @@ import javax.swing.text.JTextComponent;
 import javax.swing.JToolBar;
 import javax.swing.JList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 
 import edu.southalabama.csc527.smallworld.controller.WorldController;
 import edu.southalabama.csc527.smallworld.textui.ParserWorldObserver;
 import edu.southalabama.csc527.smallworld.textui.parser.UserCommandParser;
 import edu.southalabama.csc527.smallworld.model.Direction;
 import edu.southalabama.csc527.smallworld.model.Item;
+import edu.southalabama.csc527.smallworld.model.Place;
 import edu.southalabama.csc527.smallworld.model.World;
 
 /**
@@ -155,17 +161,32 @@ public final class SmallWorld extends JFrame {
 		f_serverResponsesTextArea.setFont(fixed);
 		f_scroll = new JScrollPane(f_serverResponsesTextArea);
 		p2.add(f_scroll, c);
-		getContentPane().add(p2, BorderLayout.CENTER);
+		//getContentPane().add(p2, BorderLayout.CENTER);
+		
+		// add images to UI
+//		ImageIcon icon = new ImageIcon(getClass().getResource("/RoomImages/SolarPath.png"));
+//		if (icon.getIconWidth() == -1) {
+//			System.out.println("Image not found!");
+//		}
+//		JLabel imageLabel = new JLabel(icon);
+//		JPanel imagePanel = new JPanel();
+//		imagePanel.add(imageLabel);
+//		
+//		JPanel centerPanel = new JPanel();
+//		centerPanel.setLayout(new BorderLayout());
+//		centerPanel.add(imagePanel, BorderLayout.NORTH);
+//		centerPanel.add(p2, BorderLayout.CENTER);
+		
+		getContentPane().add(pwo.getImagePanel(), BorderLayout.WEST);
 
 		this.getRootPane().setDefaultButton(f_sendButton);
-
+		
 		// make the user interface visible on the screen
 		setVisible(true);
 
 		// We can't do this until the GUI is fully realized
 		Insets inset = f_serverResponsesTextArea.getInsets();
-		pwo
-				.setTextWidth((f_serverResponsesTextArea.getWidth()
+		pwo.setTextWidth((f_serverResponsesTextArea.getWidth()
 						- inset.left - inset.right)
 						/ getFontMetrics(fixed).charWidth('M') - 1);
 
@@ -174,36 +195,81 @@ public final class SmallWorld extends JFrame {
 	}
 
 	private class GraphicalParserWorldObserver extends ParserWorldObserver {
-		final JTextArea f_textArea;
-		final JLabel statusBar;
+	    final JTextArea f_textArea;
+	    final JLabel statusBar;
 
-		GraphicalParserWorldObserver(JTextArea area, JLabel statusBar) {
-			f_textArea = area;
-			this.statusBar = statusBar;
-		}
-		
-		@Override
-	    public void update(World world) {
-	        super.update(world);  // shows anything pending
-	        // update
-	        String loc = world.getPlayer().getLocation().getShortDescription();
-	        int score = world.getPlayer().getPoints();
-	        statusBar.setText("Location: " + loc + "    Score: " + score);
+	    final JLabel imageLabel;
+	    final JLabel descriptionLabel;
+	    final JPanel imagePanel;
+
+	    GraphicalParserWorldObserver(JTextArea area, JLabel statusBar) {
+	        this.f_textArea = area;
+	        this.statusBar = statusBar;
+
+	        imageLabel = new JLabel();
+	        descriptionLabel = new JLabel("", JLabel.CENTER);
+	        imagePanel = new JPanel();
+	        setupImagePanel();
 	    }
 
-		@Override
-		public void gameOver() {
-			JOptionPane.showMessageDialog(SmallWorld.this,
-					"Your adventure in SmallWorld is over.", "Game Over",
-					JOptionPane.INFORMATION_MESSAGE);
-			System.exit(0);
-		}
+	    private void setupImagePanel() {
+	        imagePanel.setLayout(new BorderLayout());
+	        imageLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		@Override
-		public void show(String msg) {
-			f_textArea.setText(msg);
-		}
+	        descriptionLabel.setForeground(Color.BLACK);
+	        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+	        descriptionLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+	        imagePanel.add(imageLabel, BorderLayout.CENTER);
+	        imagePanel.add(descriptionLabel, BorderLayout.SOUTH);
+	        imagePanel.setPreferredSize(new Dimension(400, 330)); // Adjust height for image + text
+	    }
+
+	    public JPanel getImagePanel() {
+	        return imagePanel;
+	    }
+
+	    @Override
+	    public void update(World world) {
+	        super.update(world);
+
+	        Place location = world.getPlayer().getLocation();
+	        String locName = location.getName().replaceAll(" ", "");
+	        String imagePath = "/RoomImages/" + locName + ".png";
+	        URL imageUrl = getClass().getResource(imagePath);
+
+	        if (imageUrl != null) {
+	            ImageIcon originalIcon = new ImageIcon(imageUrl);
+	            Image scaled = originalIcon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+	            imageLabel.setIcon(new ImageIcon(scaled));
+	        } else {
+	            imageLabel.setIcon(null);
+	            System.err.println("Image not found for: " + imagePath);
+	        }
+
+	        // Show name and full XML description under the image
+	        String fullDescription = "<html><b>" + location.getName() + "</b><br>" + location.getDescription() + "</html>";
+	        descriptionLabel.setText(fullDescription);
+
+	        int score = world.getPlayer().getPoints();
+	        statusBar.setText("Location: " + location.getShortDescription() + "    Score: " + score);
+	    }
+
+
+	    @Override
+	    public void gameOver() {
+	        JOptionPane.showMessageDialog(SmallWorld.this,
+	                "Your adventure in SmallWorld is over.", "Game Over",
+	                JOptionPane.INFORMATION_MESSAGE);
+	        System.exit(0);
+	    }
+
+	    @Override
+	    public void show(String msg) {
+	        f_textArea.setText(msg);
+	    }
 	}
+
 
 	/**
 	 * Needed to make the compiler happy (JFrame is serializable). Just ignore

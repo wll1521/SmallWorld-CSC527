@@ -33,7 +33,7 @@ public class WorldPersistence {
 	/**
 	 * The full location, on the Java classpath, of the default world file.
 	 */
-	public static final String DEFAULT_WORLD = "/edu/southalabama/csc527/smallworld/persistence/DefaultWorld.xml";
+	public static final String DEFAULT_WORLD = "/edu/southalabama/csc527/smallworld/persistence/space_adventure.xml";
 
 	/**
 	 * Loads the game state from the specified filename on the Java classpath of
