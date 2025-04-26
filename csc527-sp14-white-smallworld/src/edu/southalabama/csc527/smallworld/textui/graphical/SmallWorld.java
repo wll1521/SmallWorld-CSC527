@@ -70,7 +70,7 @@ public final class SmallWorld extends JFrame {
 		super("It's a Small World");
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(600, 500);
+		setSize(1000, 700);
 
 		// we'll use a fixed font for dialog entry and messages
 		Font fixed = new Font("Courier", Font.PLAIN, 14);
