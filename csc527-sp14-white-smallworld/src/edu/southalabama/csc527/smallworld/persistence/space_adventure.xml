@@ -31,7 +31,7 @@
     <travel direction="S">Inner Hatch</travel>
   </place>
   <place name="Inner Hatch" article="the">
-    <description>You’re inside a compact chamber beneath the lunar surface. A reinforced grate above lets in dim light. A narrow passage leads westward through the rocks.</description>
+    <description>You’re inside a compact chamber beneath the lunar surface. A reinforced grate above lets in dim light. A narrow passage leads westward through the rocks. You see the word "XYZZY" scrawled on the wall as you pass by.</description>
     <travel direction="N">Grate Lock</travel>
     <travel direction="W">Cobbled Tunnel</travel>
   </place>
@@ -40,11 +40,11 @@
     <travel direction="W">Solar Path</travel>
   </place>
   <place name="Debris Chamber" article="the">
-    <description>You float into a cluttered room filled with remnants swept in from above. The passage east is clogged with alien sediment, but the west leads upward through a jagged ravine. A glowing console displays "Magic word: XYZZY."</description>
+    <description>You float into a cluttered room filled with remnants swept in from above. The passage east is clogged with alien sediment, but the west leads upward through a jagged ravine.</description>
     <travel direction="E">Cobbled Tunnel</travel>
     <travel direction="W">Meteor Ravine</travel>
     <riddle answer="XYZZY" failMsg="Nothing happens." successMsg="A synthesized voice echoes 'Plugh' and a portal opens.">
-      What is the access code?
+      What is the access code? You may have seen it along your journey.
     </riddle>
   </place>
   <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
