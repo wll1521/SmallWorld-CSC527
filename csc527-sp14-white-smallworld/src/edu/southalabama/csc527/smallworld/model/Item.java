@@ -2,6 +2,7 @@ package edu.southalabama.csc527.smallworld.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 public class Item {
 
@@ -73,6 +74,11 @@ public class Item {
     // Getter for rules within a specific location
     public ItemLocationRule getLocationRule(String locationName) {
         return f_locationRules.get(locationName.toUpperCase());
+    }
+    
+    // Getter map for persistence loading
+    public Map<String,ItemLocationRule> getLocationRules() {
+        return Collections.unmodifiableMap(f_locationRules);
     }
 
     @Override

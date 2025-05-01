@@ -3,6 +3,7 @@ package edu.southalabama.csc527.smallworld.persistence;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -428,6 +429,21 @@ public class WorldPersistence {
 	    itemElement.setAttribute("location", location.getName());
 	    itemElement.setAttribute("takePoints", Integer.toString(item.getTakePoints()));
 	    itemElement.setAttribute("dropPoints", Integer.toString(item.getDropPoints()));
+	 // Adds persistence to place item rules
+	    for (Map.Entry<String,ItemLocationRule> entry : item.getLocationRules().entrySet()) {
+	        String locName = entry.getKey();
+	        ItemLocationRule rule = entry.getValue();
+	        Element ruleEl = new Element("location");
+	        ruleEl.setText(locName);
+	        if (rule.isNeededToEnter()) ruleEl.setAttribute("neededToEnter","Y");
+	        if (rule.getBlockedMsg() != null)
+	            ruleEl.setAttribute("blockedMsg", rule.getBlockedMsg());
+	        if (rule.getTakePoints() != 0)
+	            ruleEl.setAttribute("takePoints", Integer.toString(rule.getTakePoints()));
+	        if (rule.getDropPoints() != 0)
+	            ruleEl.setAttribute("dropPoints", Integer.toString(rule.getDropPoints()));
+	        itemElement.addContent(ruleEl);
+	    }
 	    return itemElement;
 	}
 	
