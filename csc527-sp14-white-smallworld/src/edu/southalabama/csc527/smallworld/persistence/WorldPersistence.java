@@ -148,6 +148,18 @@ public class WorldPersistence {
 		        worldElement.addContent(createItemXML(item, place));
 		    }
 		}
+		
+		// Save inventory
+	    for (Item item : world.getPlayer().getInventory()) {
+	        Element invItem = new Element("item");
+	        invItem.setAttribute("name",      item.getName());
+	        invItem.setAttribute("article",   item.getArticle());
+	        // special marker so loadItemXML can tell this goes into inventory
+	        invItem.setAttribute("location",  "PLAYER");
+	        invItem.setAttribute("takePoints", Integer.toString(item.getTakePoints()));
+	        invItem.setAttribute("dropPoints", Integer.toString(item.getDropPoints()));
+	        worldElement.addContent(invItem);
+	    }
 
 
 		/*
@@ -191,6 +203,20 @@ public class WorldPersistence {
 		if (place.arrivalWinsGame()) {
 			placeElement.setAttribute(WINS_TAG, "Y");
 		}
+		
+		// get any riddles
+		Riddle r = place.getWorld().getRiddleManager().getRiddleFor(place.getName());
+	    if (r != null) {
+	        Element rEl = new Element("riddle");
+	        rEl.setText(r.getPrompt());
+	        rEl.setAttribute("answer", r.getAnswer());
+	        rEl.setAttribute("failMsg", r.getFailMsg());
+	        rEl.setAttribute("successMsg", r.getSuccessMsg());
+	        if (r.isSolved()) {
+	            rEl.setAttribute("solved", "Y");
+	        }
+	        placeElement.addContent(rEl);
+	    }
 
 		for (Direction possibleDirection : Direction.values()) {
 			if (place.isTravelAllowedToward(possibleDirection)) {
@@ -217,6 +243,8 @@ public class WorldPersistence {
 		Element playerElement = new Element(PLAYER_TAG);
 		playerElement.setAttribute(LOCATION_TAG, ""
 				+ player.getLocation().getName());
+		// persistent player score
+		playerElement.setAttribute("score", Integer.toString(player.getPoints()));
 		return playerElement;
 	}
 
@@ -232,13 +260,6 @@ public class WorldPersistence {
 	@SuppressWarnings("unchecked")
 	private static void loadPlaceXML(Element root, World world) {
 		List<Element> placeList = root.getChildren(PLACE_TAG);
-		/*
-		 * First Pass: We need to be careful on creating the map of places
-		 * because the interconnections require the places to exist in the world
-		 * (a chicken and the egg type problem). Hence, we do this in two steps.
-		 * The first step is to load in the descriptive information about all
-		 * the places and create them all within the world under construction.
-		 */
 		for (Element placeElement : placeList) {
 			String name = placeElement.getAttributeValue(NAME_TAG);
 			String article = placeElement.getAttributeValue(ARTICLE_TAG);
@@ -247,7 +268,7 @@ public class WorldPersistence {
 			if (name == null || article == null || description == null)
 				throw new IllegalStateException();
 			
-			//attribute tag and boolean condition added
+			// attribute tag and boolean condition added
 			String win = placeElement.getAttributeValue(WINS_TAG);
 			boolean arrivalWins = (win != null && win.contains("Y"));
 			
@@ -264,7 +285,11 @@ public class WorldPersistence {
 			    String answer     = rEl.getAttributeValue("answer");
 			    String failMsg    = rEl.getAttributeValue("failMsg");
 			    String successMsg = rEl.getAttributeValue("successMsg");
-			    Riddle riddle     = new Riddle(prompt, answer, failMsg, successMsg); // creates riddle object
+			    Riddle riddle     = new Riddle(prompt, answer, failMsg, successMsg);
+			    // restore solved‐state if it was saved
+	            if ("Y".equalsIgnoreCase(rEl.getAttributeValue("solved"))) {
+	                riddle.attempt(answer);
+	            }
 			    world.getRiddleManager().addRiddle(name, riddle);	// register for worldcontroller / parser
 			}
 			
@@ -330,62 +355,70 @@ public class WorldPersistence {
 						+ locationName + "\" as the player's location");
 			}
 		}
-	}
+			// restore score
+		String scoreStr = playerElement.getAttributeValue("score");
+		   if (scoreStr != null) {
+		           world.getPlayer().addPoints(Integer.parseInt(scoreStr));  
+		   }
+		}
 	
 	//Items additions aside from load and save changes: creates item instance from xml
+	@SuppressWarnings("unchecked") //override to fix Eclipse error
 	private static void loadItemXML(Element root, World world) {
-	    List<Element> itemList = root.getChildren("item");
-	    for (Element itemElement : itemList) {
-	        String name = itemElement.getAttributeValue("name");
+	    // getChildren now returns raw list
+	    List itemList = root.getChildren("item");
+	    for (Object itemObj : itemList) {
+	        Element itemElement = (Element) itemObj;
+
+	        String name    = itemElement.getAttributeValue("name");
 	        String article = itemElement.getAttributeValue("article");
-	        String locationName = itemElement.getAttributeValue("location");
-	        String takePointsStr = itemElement.getAttributeValue("takePoints");
-	        String dropPointsStr = itemElement.getAttributeValue("dropPoints");
-	        int takePoints = 0;
-	        int dropPoints = 0;
-	        try {
-	            takePoints = Integer.parseInt(takePointsStr);
-	        } catch (NumberFormatException e) { }
-	        try {
-	            dropPoints = Integer.parseInt(dropPointsStr);
-	        } catch (NumberFormatException e) { }
+	        String locName = itemElement.getAttributeValue("location");
+	        int takePoints = parseIntSafe(itemElement.getAttributeValue("takePoints"));
+	        int dropPoints = parseIntSafe(itemElement.getAttributeValue("dropPoints"));
+
 	        Item newItem = new Item(name, article, takePoints, dropPoints);
-	        
-	        // Check for nested <location> elements for location-specific rules.
-	        List<Element> ruleElements = itemElement.getChildren("location");
-	        for (Element ruleEl : ruleElements) {
-	            String ruleLocation = ruleEl.getText().trim();
-	            boolean neededToEnter = "Y".equalsIgnoreCase(ruleEl.getAttributeValue("neededToEnter"));
-	            String blockedMsg = ruleEl.getAttributeValue("blockedMsg");
-	            String ruleTakePointsStr = ruleEl.getAttributeValue("takePoints");
-	            String ruleDropPointsStr = ruleEl.getAttributeValue("dropPoints");
-	            int ruleTakePoints = 0;
-	            int ruleDropPoints = 0;
-	            try {
-	                ruleTakePoints = Integer.parseInt(ruleTakePointsStr);
-	            } catch (NumberFormatException e) { }
-	            try {
-	                ruleDropPoints = Integer.parseInt(ruleDropPointsStr);
-	            } catch (NumberFormatException e) { }
-	            // Create rule and add to item
-	            ItemLocationRule rule = new ItemLocationRule(neededToEnter, blockedMsg, ruleTakePoints, ruleDropPoints);
-	            newItem.addLocationRule(ruleLocation, rule);
-	            // If this rule indicates the item is required to enter the location,
-	            // add it to the world's required items mapping
-	            if (neededToEnter) {
-	                world.addRequiredItem(ruleLocation, newItem);
+
+	        // Put in inventory rather than place
+	        if ("PLAYER".equalsIgnoreCase(locName)) {
+	            world.getPlayer().getInventory().add(newItem);
+	        } else {
+	            Place place = world.getPlace(locName);
+	            if (place != null) {
+	                place.addItem(newItem);
+	            } else {
+	                world.addToMessage("Warning: Unknown location \""
+	                    + locName + "\" for item " + newItem.getShortDescription());
 	            }
 	        }
-	        
-	        // Get the location from the world using the provided location name.
-	        Place location = world.getPlace(locationName);
-	        if (location != null) {
-	            location.addItem(newItem);
-	        } else {
-	            world.addToMessage("Warning: Place \"" + locationName + "\" not found for item " + newItem.getShortDescription());
+
+	        // parse location rules
+	        List ruleElements = itemElement.getChildren("location");
+	        for (Object ruleObj : ruleElements) {
+	            Element ruleEl = (Element) ruleObj;
+	            String ruleLoc     = ruleEl.getTextTrim();
+	            boolean needed     = "Y".equalsIgnoreCase(ruleEl.getAttributeValue("neededToEnter"));
+	            String blockedMsg  = ruleEl.getAttributeValue("blockedMsg");
+	            int bonusTake      = parseIntSafe(ruleEl.getAttributeValue("takePoints"));
+	            int bonusDrop      = parseIntSafe(ruleEl.getAttributeValue("dropPoints"));
+
+	            ItemLocationRule rule = new ItemLocationRule(needed, blockedMsg, bonusTake, bonusDrop);
+	            newItem.addLocationRule(ruleLoc, rule);
+	            if (needed) {
+	                world.addRequiredItem(ruleLoc, newItem);
+	            }
 	        }
 	    }
 	}
+
+	// helper try function
+	private static int parseIntSafe(String s) {
+	    try {
+	        return Integer.parseInt(s);
+	    } catch (Exception e) {
+	        return 0;
+	    }
+	}
+
 
 	// create an <item> element with its associated attributes
 	private static Element createItemXML(Item item, Place location) {

@@ -38,4 +38,8 @@ public class Riddle {
     public String getSuccessMsg() { 
     	return successMsg; 
     }
+    
+    public String getAnswer() {
+        return answer;
+    }
 }
