@@ -52,9 +52,6 @@
   <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
     <description>You are in a blindingly radiant room, the walls pulsating with star-energy.</description>
     <travel direction="S">Mist Hall</travel>
-    <riddle answer="TERMINATOR" failMsg="Incorrect, try again." successMsg="The glistening light fades as you enter a frozen land.">
-      The line where light meets dark, day meets night, and hot meets cold. What am I?
-    </riddle>
   </place>
   <place name="Cobbled Tunnel" article="the">
     <description>You crawl over metallic cobbles in a low-ceilinged maintenance conduit. A faint light beckons from the east.</description>
@@ -65,6 +62,9 @@
     <description>You drift through a crystalline valley, an icy stream shimmering as it flows through jagged terrain.</description>
     <travel direction="N">Solar Path</travel>
     <travel direction="S">Crack in the Ice Flow</travel>
+    <riddle answer="TERMINATOR" failMsg="Incorrect, try again." successMsg="The glistening light fades as you enter a frozen land.">
+      The line where light meets dark, day meets night, and hot meets cold. What am I?
+    </riddle>
   </place>
   <place name="Mist Hall" article="the">
     <description>You hover at one end of a cavernous hall stretching west, filled with sentient mist that dances in slow spirals.</description>
