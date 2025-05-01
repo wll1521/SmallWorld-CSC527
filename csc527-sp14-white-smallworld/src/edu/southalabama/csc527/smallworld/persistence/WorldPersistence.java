@@ -155,12 +155,28 @@ public class WorldPersistence {
 	        Element invItem = new Element("item");
 	        invItem.setAttribute("name",      item.getName());
 	        invItem.setAttribute("article",   item.getArticle());
-	        // special marker so loadItemXML can tell this goes into inventory
 	        invItem.setAttribute("location",  "PLAYER");
 	        invItem.setAttribute("takePoints", Integer.toString(item.getTakePoints()));
 	        invItem.setAttribute("dropPoints", Integer.toString(item.getDropPoints()));
-	        worldElement.addContent(invItem);
-	    }
+	     // persist all the rules so loadItemXML can re-register them
+	              for (Map.Entry<String, ItemLocationRule> entry : item.getLocationRules().entrySet()) {
+	                  String ruleLoc = entry.getKey();
+	                  ItemLocationRule rule = entry.getValue();
+	                  Element ruleEl = new Element("location");
+	                  ruleEl.setText(ruleLoc);
+	                  if (rule.isNeededToEnter()) ruleEl.setAttribute("neededToEnter","Y");
+	                  if (rule.getBlockedMsg() != null)
+	                      ruleEl.setAttribute("blockedMsg", rule.getBlockedMsg());
+	                  if (rule.getTakePoints() != 0)
+	                      ruleEl.setAttribute("takePoints",
+	                                          Integer.toString(rule.getTakePoints()));
+	                  if (rule.getDropPoints() != 0)
+	                      ruleEl.setAttribute("dropPoints",
+	                                          Integer.toString(rule.getDropPoints()));
+	                  invItem.addContent(ruleEl);
+	              }
+	              worldElement.addContent(invItem);
+	           }
 
 
 		/*
@@ -435,7 +451,9 @@ public class WorldPersistence {
 	        ItemLocationRule rule = entry.getValue();
 	        Element ruleEl = new Element("location");
 	        ruleEl.setText(locName);
-	        if (rule.isNeededToEnter()) ruleEl.setAttribute("neededToEnter","Y");
+	        if (rule.isNeededToEnter()) {
+	        	ruleEl.setAttribute("neededToEnter","Y");
+	        }
 	        if (rule.getBlockedMsg() != null)
 	            ruleEl.setAttribute("blockedMsg", rule.getBlockedMsg());
 	        if (rule.getTakePoints() != 0)
