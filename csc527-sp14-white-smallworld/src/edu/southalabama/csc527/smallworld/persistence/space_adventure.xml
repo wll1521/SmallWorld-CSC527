@@ -18,9 +18,6 @@
     <description>At your boots, all the meltwater from a glacier funnels into a narrow slit in the ice. Southward, the flow bed is nothing but cracked ice.</description>
     <travel direction="N">Crystal Valley</travel>
     <travel direction="S">Grate Lock</travel>
-    <riddle answer="TERMINATOR" failMsg="Incorrect, try again." successMsg="The glistening light fades as you enter a frozen land.">
-      The line where light meets dark, day meets night, and hot meets cold. What am I?
-    </riddle>
   </place>
   <place name="Solar Path" article="a">
     <description>You are at the edge of a solar trail leading to a small terraforming station. Around you, frozen flora push through alien soil. A stream of vapor leaks from the facility.</description>
@@ -55,6 +52,9 @@
   <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
     <description>You are in a blindingly radiant room, the walls pulsating with star-energy.</description>
     <travel direction="S">Mist Hall</travel>
+    <riddle answer="TERMINATOR" failMsg="Incorrect, try again." successMsg="The glistening light fades as you enter a frozen land.">
+      The line where light meets dark, day meets night, and hot meets cold. What am I?
+    </riddle>
   </place>
   <place name="Cobbled Tunnel" article="the">
     <description>You crawl over metallic cobbles in a low-ceilinged maintenance conduit. A faint light beckons from the east.</description>
