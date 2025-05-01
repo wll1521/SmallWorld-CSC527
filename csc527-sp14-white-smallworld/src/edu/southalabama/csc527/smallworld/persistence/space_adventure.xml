@@ -50,7 +50,7 @@
     <travel direction="W">Meteor Ravine</travel>
   </place>
   <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
-    <description>You are in a blindingly radiant room, the walls pulsating with star-energy. You wakeup in cart in the far reaches of Skyrim next to Ulfric Stormcloak.</description>
+    <description>You are in a blindingly radiant room, the walls pulsating with star-energy. You wakeup in a cart in the far reaches of Skyrim next to Ulfric Stormcloak.</description>
     <travel direction="S">Mist Hall</travel>
   </place>
   <place name="Cobbled Tunnel" article="the">
@@ -70,6 +70,9 @@
     <description>You hover at one end of a cavernous hall stretching west, filled with sentient mist that dances in slow spirals.</description>
     <travel direction="N">Celestial Vault</travel>
     <travel direction="E">Avian Hatchery</travel>
+    <riddle answer="BLACKHOLEESPRESSO" failMsg="The console hisses: ‘That's just decaf.’" successMsg="The panel glows: ‘Welcome, caffeinated one.’">
+  What’s dark, dense, and makes mornings feel like time is collapsing?
+</riddle>
   </place>
 
   <item name="Quantum Core" article="a" location="Mist Hall" takePoints="500" dropPoints="0">
