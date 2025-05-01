@@ -72,10 +72,12 @@
     <travel direction="E">Avian Hatchery</travel>
   </place>
 
-  <item name="Quantum Core" article="a" location="Mist Hall" takePoints="500" dropPoints="0" />
+  <item name="Quantum Core" article="a" location="Mist Hall" takePoints="500" dropPoints="0">
+   <location neededToEnter="Y" blockedMsg="A quantum shield prevents your entry.">Celestial Vault</location>
+   </item>
   <item name="Alien Fungus" article="a" location="Lunar Ridge" takePoints="-1000" dropPoints="0" />
   <item name="Idol of Light" article="a" location="Debris Chamber" takePoints="10" dropPoints="0">
-    <location neededToEnter="Y" blockedMsg="A quantum shield prevents your entry.">Celestial Vault</location>
+    <location neededToEnter="Y" blockedMsg="A quantum shield is holding back the dark energy.">Celestial Vault</location>
   </item>
   <item name="Rusted Passkey" article="the" location="Terraform Station" takePoints="50" dropPoints="0">
     <location neededToEnter="Y" blockedMsg="A corroded airlock seals the chamber.">Mist Hall</location>
