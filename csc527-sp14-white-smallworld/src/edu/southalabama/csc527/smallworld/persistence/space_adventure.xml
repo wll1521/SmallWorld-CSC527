@@ -50,7 +50,7 @@
     <travel direction="W">Meteor Ravine</travel>
   </place>
   <place name="Celestial Vault" article="the" arrivalWinsGame="Y">
-    <description>You are in a blindingly radiant room, the walls pulsating with star-energy.</description>
+    <description>You are in a blindingly radiant room, the walls pulsating with star-energy. You wakeup in cart in the far reaches of Skyrim next to Ulfric Stormcloak.</description>
     <travel direction="S">Mist Hall</travel>
   </place>
   <place name="Cobbled Tunnel" article="the">
